@@ -5,12 +5,12 @@ from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
+from ai_server import analyze_food
 
 import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-AI_SERVER = "http://ai:8000/analyze"
 
 #⓵一旦ランダム，本番環境で書き換える
 app.config["SECRET_KEY"] = os.urandom(24)
@@ -26,7 +26,7 @@ DB_INFO = {
     'host': 'db',
     'name': 'sampledb'
 }
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg://{user}:{password}@{host}/{name}'.format(**DB_INFO)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 db.init_app(app)
 
@@ -325,13 +325,7 @@ def classify():
 
     try:
 
-        files = {
-            "image": (file.filename, file.stream, file.mimetype)
-        }
-
-        res = requests.post(AI_SERVER, files=files)
-
-        detections = res.json()
+        detections = analyze_food(file)
 
         foods = []
 
@@ -372,4 +366,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
