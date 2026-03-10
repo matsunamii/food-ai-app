@@ -6,9 +6,17 @@ from PIL import Image
 
 app = Flask(__name__)
 
-# ONNXモデルロード
-session = ort.InferenceSession("best.onnx")
-input_name = session.get_inputs()[0].name
+session = None
+input_name = None
+
+def get_session():
+    global session, input_name
+
+    if session is None:
+        session = ort.InferenceSession("best.onnx")
+        input_name = session.get_inputs()[0].name
+
+    return session, input_name
 
 # 前処理
 def preprocess(img):
@@ -33,6 +41,8 @@ def analyze():
     img = np.array(image)
 
     input_img = preprocess(img)
+
+    session, input_name = get_session()
 
     outputs = session.run(None,{input_name:input_img})
 
@@ -82,6 +92,3 @@ def analyze():
             })
 
     return jsonify(results)
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
