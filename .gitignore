@@ -5,9 +5,5 @@ venv/
 instance/
 *.db
 
-# AIモデル
-*.onnx
-*.pt
-
 # Docker
 *.log
