@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
-from ai_server import analyze_food
+from ai_server import analyze
 
 import os
 from werkzeug.utils import secure_filename
@@ -325,7 +325,7 @@ def classify():
 
     try:
 
-        detections = analyze_food(file)
+        detections = analyze(file)
 
         foods = []
 
