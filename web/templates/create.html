@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}食事内容の記録{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h2 class="mb-4">食事内容の記録</h2>
+            <form method="POST" enctype="multipart/form-data">
+                                <!-- 食事カテゴリ -->
+                <div class="mb-3">
+                    <label class="form-label">食事カテゴリ</label>
+                    <select name="meal_type" class="form-select">
+                        <option value="朝">朝</option>
+                        <option value="昼">昼</option>
+                        <option value="夜">夜</option>
+                    </select>
+                </div>
+
+                <!-- 画像 -->
+                <div class="mb-3">
+                    <label for="fileUpload" class="form-label">画像から自動判別</label>
+
+                    <div class="input-group">
+                        <input type="file" name="img" id="fileUpload" class="form-control">
+                        <button type="button" id="autoFillBtn" class="btn btn-outline-primary">
+                            画像から自動入力
+                        </button>
+                    </div>
+                    <div class="form-text" id="aiStatus"></div>
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">解析画像</label>
+
+                    <div style="position:relative">
+
+                        <img id="previewImage" style="max-width:100%; display:none;">
+
+                        <canvas id="bboxCanvas"
+                        style="position:absolute; left:0; top:0;"></canvas>
+
+                    </div>
+
+                </div>
+
+                <!-- 食事名 -->
+                <div class="mb-3">
+                    <label class="form-label">食事名</label>
+
+                    <div id="food-list">
+
+                        <div class="input-group mb-2 position-relative">
+                            <input type="text" name="foods[]" class="form-control food-input" placeholder="料理名">
+                            <div class="suggestions"></div>
+                            <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">削除</button>
+                        </div>
+
+                    </div>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addFood()">
+                        ＋料理を追加
+                    </button>
+
+                </div>
+
+                <!-- 栄養情報 -->
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <label class="form-label">カロリー</label>
+                        <input type="number" step="any" name="calorie" class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">タンパク質</label>
+                        <input type="number" step="any" name="protein" class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">脂質</label>
+                        <input type="number" step="any" name="fat" class="form-control">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">炭水化物</label>
+                        <input type="number" step="any" name="carb" class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="submit" class="btn btn-success btn-lg w-25">
+                        記録する
+                    </button>
+                    <a href="/dashboard" class="btn btn-outline-secondary  btn-lg w-25">
+                        ホームに戻る
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+
+const foodDB = {{ nutrition_map | tojson }};
+
+const foodByName = {};
+
+Object.values(foodDB).forEach(f => {
+  foodByName[f.name] = f;
+});
+
+</script>
+<script src="{{ url_for('static', filename='js/meal.js') }}"></script>
+{% endblock %}

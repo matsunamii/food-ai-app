@@ -1,0 +1,19 @@
+.suggestions{
+  position:absolute;
+  background:white;
+  border:1px solid #ddd;
+  width:100%;
+  top:38px;
+  z-index:10;
+  max-height:150px;
+  overflow-y:auto;
+}
+
+.suggestion-item{
+  padding:6px;
+  cursor:pointer;
+}
+
+.suggestion-item:hover{
+  background:#f0f0f0;
+}

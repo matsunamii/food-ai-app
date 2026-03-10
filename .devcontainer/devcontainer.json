@@ -1,0 +1,6 @@
+{
+  "name": "healthcare-app",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "web",
+  "workspaceFolder": "/app"
+}

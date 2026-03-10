@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}ヘルスケアアプリ{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <div class="position-relative text-center mb-4">
+
+        <h2 class="mb-0">ヘルスケアアプリ</h2>
+        <p class="mb-0">1日の食事内容を記録しましょう!</p>
+
+        <a href="/logout" class="btn btn-warning position-absolute end-0 top-0">
+            ログアウト
+        </a>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-3 d-grid">
+            <a href="/dashboard/create" class="btn btn-info btn-lg">
+                食事内容の記録
+            </a>
+        </div>
+
+        <div class="col-md-3 d-grid">
+            <a href="/dashboard/log" class="btn btn-outline-info btn-lg">
+                過去のデータ
+            </a>
+        </div>
+    </div>
+    <div class="row">
+
+        <!-- 今日の食事 -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">今日の食事</h5>
+
+                    <p>朝：
+                    {% if breakfast %}
+
+                    {% for m in breakfast %}
+                    {{ m.foods }}
+
+                    <a href="/meal/delete/{{ m.id }}" class="btn btn-sm btn-danger">
+                    削除
+                    </a>
+                    <br>
+
+                    {% endfor %}
+
+                    {% else %}
+                    未入力
+                    {% endif %}
+                    </p>
+
+                    <p>昼：
+                    {% if lunch %}
+
+                    {% for m in lunch %}
+                    {{ m.foods }}
+
+                    <a href="/meal/delete/{{ m.id }}" class="btn btn-sm btn-danger">
+                    削除
+                    </a>
+                    <br>
+
+                    {% endfor %}
+
+                    {% else %}
+                    未入力
+                    {% endif %}
+                    </p>
+                    
+                    <p>夜：
+                    {% if dinner %}
+
+                    {% for m in dinner %}
+                    {{ m.foods }}
+
+                    <a href="/meal/delete/{{ m.id }}" class="btn btn-sm btn-danger">
+                    削除
+                    </a>
+                    <br>
+
+                    {% endfor %}
+
+                    {% else %}
+                    未入力
+                    {% endif %}
+                    </p>
+                    
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 栄養バランス -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">栄養バランス</h5>
+
+                    <p>カロリー</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" style="width: {{ (total_cal/2200*100)|round }}%">
+                            {{ total_cal }} / 2200 kcal
+                        </div>
+                    </div>
+
+                    <p>タンパク質</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-success" style="width: {{ (total_protein/140*100)|round }}%">
+                            {{ total_protein }} / 140 g
+                        </div>
+                    </div>
+
+                    <p>脂質</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-warning" style="width: {{ (total_fat/50*100)|round }}%">
+                            {{ total_fat }} / 50 g
+                        </div>
+                    </div>
+
+                    <p>炭水化物</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-info" style="width: {{ (total_carb/300*100)|round }}%">
+                            {{ total_carb }} / 300 g
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

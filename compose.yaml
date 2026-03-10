@@ -1,0 +1,27 @@
+services:
+   web:
+     build: ./web
+     ports:
+       - "5000:5000"
+     volumes:
+       - ./web:/app
+     depends_on:
+       - db
+       - ai
+   ai:
+     build: ./ai
+     ports:
+       - "8000:8000"
+     volumes:
+       - model_cache:/root/.cache
+   db:
+     image: postgres:14
+     environment:
+       POSTGRES_USER: user
+       POSTGRES_PASSWORD: password
+       POSTGRES_DB: sampledb
+     volumes:
+       - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+  model_cache:
