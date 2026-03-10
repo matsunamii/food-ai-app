@@ -353,7 +353,7 @@ def classify():
             "ok": False,
             "error": str(e)
         })
-port = int(os.environ.get("PORT", 5000))
+port = int(os.environ.get("PORT", 8080))
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
