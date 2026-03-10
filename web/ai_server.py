@@ -29,7 +29,6 @@ def preprocess(img):
     return img
 
 # API
-@app.route("/analyze", methods=["POST"])
 def analyze():
 
     if "image" not in request.files:

@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, jsonify
-import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
@@ -12,22 +11,15 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-#⓵一旦ランダム，本番環境で書き換える
-app.config["SECRET_KEY"] = os.urandom(24)
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-key")
 
 #⓶ログイン管理システム
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 db = SQLAlchemy()
-DB_INFO = {
-    'user': 'user',
-    'password': 'password',
-    'host': 'db',
-    'name': 'sampledb'
-}
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 db.init_app(app)
 
 migrate = Migrate(app,db)
