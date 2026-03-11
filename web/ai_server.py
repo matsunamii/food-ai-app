@@ -29,13 +29,7 @@ def preprocess(img):
     return img
 
 # API
-def analyze():
-
-    if "image" not in request.files:
-        return jsonify({"error":"image not found"}),400
-
-    file = request.files["image"]
-
+def analyze(file):
     image = Image.open(file).convert("RGB")
     img = np.array(image)
 
@@ -90,4 +84,4 @@ def analyze():
                 "bbox":[int(x),int(y),int(x+w),int(y+h)]
             })
 
-    return jsonify(results)
+    return results
