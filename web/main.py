@@ -19,10 +19,12 @@ login_manager.init_app(app)
 
 db = SQLAlchemy()
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL",
-    "sqlite:///app.db"
-)
+db_url = os.getenv("DATABASE_URL")
+
+if db_url:
+    db_url = db_url.replace("postgresql://", "postgresql+psycopg2://")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
