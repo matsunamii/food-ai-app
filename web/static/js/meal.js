@@ -1,11 +1,7 @@
 // AI検出結果を保存
 let detectedFoods = [];
 
-
-/* =========================
-   料理入力フォーム追加
-========================= */
-
+// 料理入力フォーム追加
 function addFood(value = "") {
 
   const container = document.getElementById("food-list");
@@ -44,11 +40,7 @@ function addFood(value = "") {
   setupAutocomplete(input);
 }
 
-
-/* =========================
-   入力フォーム初期化
-========================= */
-
+// 入力フォーム初期化
 function clearFoodListKeepOne() {
 
   const container = document.getElementById("food-list");
@@ -71,10 +63,7 @@ function clearFoodListKeepOne() {
 
 }
 
-
-/* =========================
-   栄養再計算
-========================= */
+// 栄養再計算
 function updateNutrition(){
 
   const inputs = document.querySelectorAll('input[name="foods[]"]');
@@ -109,10 +98,8 @@ function updateNutrition(){
   document.querySelector('input[name="carb"]').value = totalCarb;
 
 }
-/* =========================
-   AI解析
-========================= */
 
+// AI解析
 document.getElementById("autoFillBtn").addEventListener("click", async () => {
 
   const fileInput = document.getElementById("fileUpload");
